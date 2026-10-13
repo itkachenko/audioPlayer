@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-09",
+  "preview": "/public/images/general-img-landscape.png",
+  "articles": [
+    {
+      "id": "000001a1-205a-da15-a9b5-1",
+      "title": "L’exposition à géométrie variable des banques françaises au risque souverain",
+      "authors": ["Johann Corric"],
+      "images": "/public/images/landscape-placeholder.svg",
+      "url": "/pages/article-000001a1-205a-da15-a9b5-32fe36bd0000.html",
+      "audio": "http://localhost:5173/public/audio/audio-placeholder2.mp3",
+      "duration": 301
+    },
+    {
+      "id": "000001a1-2c54-da15-a9b5-2",
+      "title": "Washington conclut un accord avec Moscou sur le gazole",
+      "authors": ["Yves-Marc Le Réour"],
+      "images": "/public/images/landscape-placeholder.svg",
+      "url": "/pages/article-000001a1-2c54-da15-a9b5-3ef46d330000.html",
+      "audio": "http://localhost:5173/public/audio/audio-placeholder3.mp3",
+      "duration": 301
+    }
+  ]
+}

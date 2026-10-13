@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>audio-player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Merriweather:wght@300;400;500;600;700&display=swap"
+      rel="preload"
+      as="style"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Merriweather:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      style="display: none !important"
+      id="iconsMap"
+    >
+      {{!-- icon check - bold --}}
+      <symbol id="icon-check-bold" viewBox="0 0 16 12">
+        <path
+          d="M14.985 2.66348L6.72282 11.126C6.42712 11.4289 6.04445 11.5714 5.64439 11.5714C5.26172 11.5714 4.87905 11.4289 4.58335 11.126L0.44355 6.90366C-0.14785 6.28011 -0.14785 5.30023 0.44355 4.69449C1.03495 4.08875 2.00902 4.08875 2.60042 4.69449L5.64439 7.81227L12.8282 0.454305C13.4196 -0.151435 14.3936 -0.151435 14.985 0.454305C15.5764 1.07786 15.5764 2.05774 14.985 2.66348Z"
+        />
+      </symbol>
+      {{!-- audio chevron --}}
+      <symbol id="icon-audio-chevron" viewBox="0 0 48 15">
+        <path
+          d="M2.15039 2.15051L23.6504 12.1505L45.1504 2.15051"
+          stroke="#245D72"
+          stroke-width="4.3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </symbol>
+      {{!-- close --}}
+
+      <symbol id="icon-close" viewBox="0 0 22 18">
+        <rect
+          x="3.92969"
+          y="0.514725"
+          width="22"
+          height="2"
+          transform="rotate(45 3.92969 0.514725)"
+        />
+        <rect
+          x="2.51562"
+          y="16.0711"
+          width="22"
+          height="2"
+          transform="rotate(-45 2.51562 16.0711)"
+        />
+      </symbol>
+
+      {{!-- audio play --}}
+
+      <symbol id="icon-audio-play" viewBox="0 0 11 13">
+        <g
+          id="Page-1"
+          stroke="none"
+          stroke-width="1"
+          fill="none"
+          fill-rule="evenodd"
+        >
+          <g id="shape" fill="#245D72" fill-rule="nonzero">
+            <path
+              d="M10.3748176,7.60654897 L1.87433016,12.8261927 C1.68380088,12.9401698 1.46855178,13 1.24955694,13 C1.03055895,13 0.815302511,12.9401698 0.624777421,12.8261927 C0.434789534,12.710459 0.277028682,12.543885 0.167354992,12.3433143 C0.0576819313,12.1428469 9.76996262e-15,11.9153061 9.76996262e-15,11.6838386 L9.76996262e-15,1.31883773 C9.76996262e-15,1.0872979 0.0576819313,0.85982322 0.167354992,0.659291767 C0.277028682,0.45875928 0.434789534,0.292235982 0.624777421,0.176464 C0.816087334,0.0642295439 1.03070375,0.00361247397 1.24955694,0 C1.468258,0.00473795367 1.68261525,0.065283651 1.87433016,0.176464 L10.3748176,5.3589479 C10.5648852,5.47467132 10.7226891,5.64117292 10.8324383,5.8417023 C10.9421875,6.04224202 11,6.26974151 11,6.50132267 C11,6.73290384 10.9421875,6.96040332 10.8324383,7.16094304 C10.7226891,7.36147243 10.5648852,7.52797402 10.3748176,7.64369744 L10.3748176,7.60654897 Z"
+              id="Path"
+            />
+          </g>
+        </g>
+      </symbol>
+
+      {{!-- audio pause --}}
+
+      <symbol id="icon-audio-pause" viewBox="0 0 13 12">
+        <path
+          d="M2.57334 2.57313L2.57334 9.34679"
+          stroke="#245D72"
+          stroke-width="5.14625"
+          stroke-linecap="round"
+        />
+        <path
+          d="M10.3564 2.57313V9.34679"
+          stroke="#245D72"
+          stroke-width="5.14625"
+          stroke-linecap="round"
+        />
+      </symbol>
+
+      {{!-- audio next 10 --}}
+      <symbol id="icon-audio-next-10" viewBox="0 0 40 40">
+        <path
+          d="M26.8485 30.1625C21.906 35.105 13.8925 35.105 8.94989 30.1625C4.00732 25.2199 4.00732 17.2064 8.94989 12.2638C13.8925 7.32124 21.906 7.32124 26.8485 12.2638"
+          stroke="white"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M29.6586 16.2096C29.9525 16.2534 30.2497 16.1553 30.4598 15.9452L30.5285 15.8765C30.7385 15.6665 30.8366 15.3694 30.7929 15.0757L30.1062 10.4591C29.9929 9.6974 29.0605 9.38958 28.516 9.93409L24.5189 13.9312C23.9745 14.4756 24.2821 15.4078 25.0435 15.5213L29.6586 16.2096Z"
+          fill="white"
+        />
+        <path
+          d="M11.1559 19.6307L11.5474 17.4702L16.4919 16.4697L14.7084 26.8372H12.3884L13.7224 19.0217L11.1559 19.6307ZM18.9009 21.7622C18.8719 22.0328 18.8526 22.318 18.8429 22.6177C18.8332 22.9077 18.8429 23.188 18.8719 23.4587C18.9009 23.7197 18.9589 23.9613 19.0459 24.1837C19.1426 24.3963 19.2731 24.5703 19.4374 24.7057C19.6017 24.8313 19.8144 24.899 20.0754 24.9087C20.4041 24.9183 20.7037 24.8362 20.9744 24.6622C21.2451 24.4785 21.4819 24.232 21.6849 23.9227C21.8879 23.6133 22.0571 23.275 22.1924 22.9077C22.3277 22.5307 22.4196 22.1488 22.4679 21.7622C22.4969 21.4915 22.5162 21.2112 22.5259 20.9212C22.5356 20.6215 22.5259 20.3363 22.4969 20.0657C22.4679 19.795 22.4051 19.5533 22.3084 19.3407C22.2214 19.1183 22.0957 18.9443 21.9314 18.8187C21.7671 18.6833 21.5544 18.6108 21.2934 18.6012C20.9647 18.6012 20.6651 18.693 20.3944 18.8767C20.1237 19.0507 19.8869 19.2923 19.6839 19.6017C19.4809 19.9013 19.3117 20.2397 19.1764 20.6167C19.0507 20.9937 18.9589 21.3755 18.9009 21.7622ZM16.5664 21.7622C16.6727 21.0372 16.8612 20.3605 17.1319 19.7322C17.4122 19.0942 17.7651 18.5335 18.1904 18.0502C18.6157 17.5572 19.1087 17.1753 19.6694 16.9047C20.2301 16.634 20.8439 16.4987 21.5109 16.4987C22.0716 16.4987 22.5501 16.5953 22.9464 16.7887C23.3524 16.9723 23.6907 17.2333 23.9614 17.5717C24.2321 17.9003 24.4399 18.287 24.5849 18.7317C24.7396 19.1667 24.8314 19.6452 24.8604 20.1672C24.8894 20.6892 24.8701 21.2208 24.8024 21.7622C24.7057 22.4872 24.5221 23.1687 24.2514 23.8067C23.9807 24.435 23.6327 24.9908 23.2074 25.4742C22.7821 25.9575 22.2891 26.3393 21.7284 26.6197C21.1677 26.8903 20.5442 27.0257 19.8579 27.0257C19.3166 27.0257 18.8429 26.929 18.4369 26.7357C18.0406 26.5423 17.7071 26.2813 17.4364 25.9527C17.1657 25.6143 16.9531 25.2228 16.7984 24.7782C16.6534 24.3335 16.5616 23.855 16.5229 23.3427C16.4939 22.8303 16.5084 22.3035 16.5664 21.7622Z"
+          fill="white"
+        />
+      </symbol>
+
+      {{!-- audio next track --}}
+      <symbol id="icon-audio-next-track" viewBox="0 0 12 13">
+        <path
+          d="M9.88805 7.36115L1.78639 12.4124C1.6048 12.5227 1.39965 12.5806 1.19093 12.5806C0.982207 12.5806 0.77705 12.5227 0.595464 12.4124C0.41439 12.3004 0.264031 12.1392 0.159503 11.9451C0.0549756 11.7511 -3.58973e-05 11.5309 1.75743e-08 11.3069V1.27629C-3.58973e-05 1.05222 0.0549756 0.832084 0.159503 0.638022C0.264031 0.443959 0.41439 0.282808 0.595464 0.170771C0.777798 0.0621574 0.982345 0.00349593 1.19093 0C1.39937 0.0045851 1.60367 0.0631775 1.78639 0.170771L9.88805 5.18606C10.0692 5.29805 10.2196 5.45918 10.3242 5.65324C10.4288 5.84731 10.4839 6.06747 10.4839 6.29158C10.4839 6.51569 10.4288 6.73585 10.3242 6.92992C10.2196 7.12398 10.0692 7.28511 9.88805 7.3971V7.36115Z"
+          fill="white"
+        />
+        <rect
+          x="9.06445"
+          y="0.225586"
+          width="2"
+          height="12"
+          rx="1"
+          fill="white"
+        />
+      </symbol>
+
+      {{!-- audio prev 10 --}}
+      <symbol id="icon-audio-prev-10" viewBox="0 0 40 40">
+        <path
+          d="M12.2638 30.1625C17.2063 35.105 25.2198 35.105 30.1624 30.1625C35.105 25.2199 35.105 17.2064 30.1624 12.2638C25.2198 7.32124 17.2063 7.32124 12.2638 12.2638"
+          stroke="white"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M9.45372 16.2096C9.15985 16.2534 8.86261 16.1553 8.65252 15.9452L8.58381 15.8765C8.3738 15.6665 8.27573 15.3694 8.31942 15.0757L9.00611 10.4591C9.1194 9.6974 10.0518 9.38958 10.5963 9.93409L14.5934 13.9312C15.1378 14.4756 14.8302 15.4078 14.0688 15.5213L9.45372 16.2096Z"
+          fill="white"
+        />
+        <path
+          d="M15.1549 19.6307L15.5464 17.4702L20.4909 16.4697L18.7074 26.8372H16.3874L17.7214 19.0217L15.1549 19.6307ZM22.8999 21.7622C22.8709 22.0328 22.8516 22.318 22.8419 22.6177C22.8323 22.9077 22.8419 23.188 22.8709 23.4587C22.8999 23.7197 22.9579 23.9613 23.0449 24.1837C23.1416 24.3963 23.2721 24.5703 23.4364 24.7057C23.6008 24.8313 23.8134 24.899 24.0744 24.9087C24.4031 24.9183 24.7028 24.8362 24.9734 24.6622C25.2441 24.4785 25.4809 24.232 25.6839 23.9227C25.8869 23.6133 26.0561 23.275 26.1914 22.9077C26.3268 22.5307 26.4186 22.1488 26.4669 21.7622C26.4959 21.4915 26.5153 21.2112 26.5249 20.9212C26.5346 20.6215 26.5249 20.3363 26.4959 20.0657C26.4669 19.795 26.4041 19.5533 26.3074 19.3407C26.2204 19.1183 26.0948 18.9443 25.9304 18.8187C25.7661 18.6833 25.5534 18.6108 25.2924 18.6012C24.9638 18.6012 24.6641 18.693 24.3934 18.8767C24.1228 19.0507 23.8859 19.2923 23.6829 19.6017C23.4799 19.9013 23.3108 20.2397 23.1754 20.6167C23.0498 20.9937 22.9579 21.3755 22.8999 21.7622ZM20.5654 21.7622C20.6718 21.0372 20.8603 20.3605 21.1309 19.7322C21.4113 19.0942 21.7641 18.5335 22.1894 18.0502C22.6148 17.5572 23.1078 17.1753 23.6684 16.9047C24.2291 16.634 24.8429 16.4987 25.5099 16.4987C26.0706 16.4987 26.5491 16.5953 26.9454 16.7887C27.3514 16.9723 27.6898 17.2333 27.9604 17.5717C28.2311 17.9003 28.4389 18.287 28.5839 18.7317C28.7386 19.1667 28.8304 19.6452 28.8594 20.1672C28.8884 20.6892 28.8691 21.2208 28.8014 21.7622C28.7048 22.4872 28.5211 23.1687 28.2504 23.8067C27.9798 24.435 27.6318 24.9908 27.2064 25.4742C26.7811 25.9575 26.2881 26.3393 25.7274 26.6197C25.1668 26.8903 24.5433 27.0257 23.8569 27.0257C23.3156 27.0257 22.8419 26.929 22.4359 26.7357C22.0396 26.5423 21.7061 26.2813 21.4354 25.9527C21.1648 25.6143 20.9521 25.2228 20.7974 24.7782C20.6524 24.3335 20.5606 23.855 20.5219 23.3427C20.4929 22.8303 20.5074 22.3035 20.5654 21.7622Z"
+          fill="white"
+        />
+      </symbol>
+
+      {{!-- audio prev track --}}
+      <symbol id="icon-audio-prev-track" viewBox="0 0 12 13">
+        <path
+          d="M1.1764 7.36115L9.27806 12.4124C9.45965 12.5227 9.66481 12.5806 9.87353 12.5806C10.0822 12.5806 10.2874 12.5227 10.469 12.4124C10.6501 12.3004 10.8004 12.1392 10.9049 11.9451C11.0095 11.7511 11.0645 11.5309 11.0645 11.3069V1.27629C11.0645 1.05222 11.0095 0.832084 10.9049 0.638022C10.8004 0.443959 10.6501 0.282808 10.469 0.170771C10.2867 0.0621574 10.0821 0.00349593 9.87353 0C9.66509 0.0045851 9.46078 0.0631775 9.27806 0.170771L1.1764 5.18606C0.995261 5.29805 0.844831 5.45918 0.740239 5.65324C0.635648 5.84731 0.580583 6.06747 0.580583 6.29158C0.580583 6.51569 0.635648 6.73585 0.740239 6.92992C0.844831 7.12398 0.995261 7.28511 1.1764 7.3971V7.36115Z"
+          fill="white"
+        />
+        <rect
+          width="2"
+          height="12"
+          rx="1"
+          transform="matrix(-1 0 0 1 2 0.225586)"
+          fill="white"
+        />
+      </symbol>
+
+      {{!-- audio playlist --}}
+      <symbol id="icon-playlist" viewBox="0 0 36 36">
+        <rect
+          x="1"
+          y="1"
+          width="34"
+          height="34"
+          rx="5.98507"
+          stroke="white"
+          stroke-width="2"
+        />
+        <path
+          d="M13.4101 18.32L9.90635 20.5045C9.82782 20.5522 9.7391 20.5772 9.64883 20.5772C9.55857 20.5772 9.46984 20.5522 9.39131 20.5045C9.313 20.456 9.24797 20.3863 9.20277 20.3024C9.15756 20.2185 9.13377 20.1233 9.13379 20.0264V15.6884C9.13377 15.5915 9.15756 15.4963 9.20277 15.4124C9.24797 15.3285 9.313 15.2588 9.39131 15.2103C9.47016 15.1634 9.55863 15.138 9.64883 15.1365C9.73898 15.1385 9.82733 15.1638 9.90635 15.2103L13.4101 17.3793C13.4884 17.4277 13.5535 17.4974 13.5987 17.5813C13.644 17.6653 13.6678 17.7605 13.6678 17.8574C13.6678 17.9543 13.644 18.0495 13.5987 18.1335C13.5535 18.2174 13.4884 18.2871 13.4101 18.3355V18.32Z"
+          fill="white"
+        />
+        <rect
+          x="16.0537"
+          y="16.0012"
+          width="10.8118"
+          height="3.45977"
+          rx="0.864944"
+          fill="white"
+        />
+        <rect
+          x="9.13379"
+          y="9.08179"
+          width="17.7313"
+          height="3.45977"
+          rx="0.864944"
+          fill="white"
+        />
+        <rect
+          x="9.13379"
+          y="22.921"
+          width="17.7313"
+          height="3.45977"
+          rx="0.864944"
+          fill="white"
+        />
+      </symbol>
+
+      {{!-- audio playlist down --}}
+      <symbol id="icon-playlist-down" viewBox="0 0 36 36">
+        <rect
+          x="1"
+          y="1"
+          width="34"
+          height="34"
+          rx="5.98507"
+          stroke="white"
+          stroke-width="2"
+        />
+        <path
+          d="M16.8767 21.5721L11.9944 15.8824C11.3938 15.283 11.3938 14 12.5949 14L23.4058 14C24.6063 14 24.6056 15.2549 24.0055 15.8824L19.1609 21.5721C19.0433 21.7022 18.8741 21.8102 18.6703 21.8853C18.4665 21.9605 18.2353 22 17.9999 22C17.7645 22 17.5333 21.9605 17.3295 21.8853C17.1257 21.8102 16.9565 21.7022 16.8389 21.5721L16.8767 21.5721Z"
+          fill="white"
+        />
+      </symbol>
+
+      {{!-- audio mute --}}
+      <symbol id="icon-mute" viewBox="0 0 36 36">
+        <rect
+          x="1"
+          y="1"
+          width="34"
+          height="34"
+          rx="5.98507"
+          stroke="white"
+          stroke-width="2"
+        />
+        <path
+          d="M24.7823 23.1738C24.7823 25.0868 23.0084 26.9998 21.2345 26.9998C19.4607 26.9998 18.8694 26.1168 17.6868 24.9396C16.5042 23.7624 15.9129 23.3209 13.9912 23.3209C12.0695 23.3209 10 22.1437 10 20.0835C10 18.6075 10 17.1315 10 15.6555C10 13.5954 12.0695 12.4181 13.9912 12.4181C15.9129 12.4181 16.5042 11.9767 17.6868 10.7994C18.8694 9.6222 19.4607 8.73928 21.2345 8.73928C23.0084 8.73928 24.7823 10.6523 24.7823 12.5653"
+          stroke="white"
+          stroke-width="1.92216"
+          stroke-linecap="round"
+        />
+        <path
+          d="M22 14.9999L27.9998 20.9996"
+          stroke="#F94835"
+          stroke-width="1.9999"
+          stroke-linecap="round"
+        />
+        <path
+          d="M28 14.9999L22.0003 20.9996"
+          stroke="#F94835"
+          stroke-width="1.9999"
+          stroke-linecap="round"
+        />
+      </symbol>
+
+      {{!-- audio volume --}}
+      <symbol id="icon-volume" viewBox="0 0 36 36">
+        <rect
+          x="1"
+          y="1"
+          width="34"
+          height="34"
+          rx="5.98507"
+          stroke="white"
+          stroke-width="2"
+        />
+        <path
+          d="M11.9912 23.3211C10.0695 23.3211 8 22.1439 8 20.0838V15.6558C8 13.5956 10.0695 12.4184 11.9912 12.4184C13.9129 12.4184 14.5042 11.9769 15.6868 10.7997C16.8694 9.62245 17.4607 8.73952 19.2345 8.73952C21.0084 8.73952 22.7823 10.6525 22.7823 12.5655V23.174C22.7823 25.087 21.0084 27 19.2345 27C17.4607 27 16.8694 26.1171 15.6868 24.9398C14.5042 23.7626 13.9129 23.3211 11.9912 23.3211Z"
+          stroke="white"
+          stroke-width="1.92216"
+        />
+        <path
+          d="M26.5605 14.1016C27.4555 15.1015 27.9997 16.422 27.9997 17.8696C27.9997 19.3172 27.4555 20.6377 26.5605 21.6376"
+          stroke="white"
+          stroke-width="1.73909"
+          stroke-linecap="round"
+        />
+      </symbol>
+
+      {{!-- audio minimaze up --}}
+      <symbol id="icon-minimaze-up" viewBox="0 0 37 37">
+        <path
+          d="M9.98151 35.0325H7.99252C4.1312 35.0325 1.00098 31.9023 1.00098 28.0409V7.99253C1.00098 4.1312 4.1312 1.00098 7.99253 1.00098H28.0409C31.9023 1.00098 35.0325 4.1312 35.0325 7.99253V11.3995"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M20.6901 34.9231H29.7737C32.9381 34.9231 34.9237 32.6818 34.9237 29.5101V20.9515C34.9237 17.7798 32.9485 15.5385 29.7737 15.5385H20.6901C17.5152 15.5385 15.5391 17.7798 15.5391 20.9515V29.5101C15.5391 32.6818 17.5152 34.9231 20.6901 34.9231Z"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M8.52514 13.3284L8.52509 8.52397L13.3296 8.52397"
+          stroke="white"
+          stroke-width="1.50139"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M8.5835 8.58264L13.5881 13.5873"
+          stroke="white"
+          stroke-width="1.50139"
+          stroke-linecap="round"
+        />
+      </symbol>
+
+      {{!-- audio minimaze down --}}
+      <symbol id="icon-minimaze-down" viewBox="0 0 37 37">
+        <path
+          d="M9.98151 35.0325H7.99252C4.1312 35.0325 1.00098 31.9023 1.00098 28.0409V7.99253C1.00098 4.1312 4.1312 1.00098 7.99253 1.00098H28.0409C31.9023 1.00098 35.0325 4.1312 35.0325 7.99253V11.3995"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M20.6901 34.9232H29.7737C32.9381 34.9232 34.9237 32.6819 34.9237 29.5102V20.9516C34.9237 17.7799 32.9485 15.5386 29.7737 15.5386H20.6901C17.5152 15.5386 15.5391 17.7799 15.5391 20.9516V29.5102C15.5391 32.6819 17.5152 34.9232 20.6901 34.9232Z"
+          stroke="white"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M13.3284 8.52514L13.3284 13.3295L8.52393 13.3295"
+          stroke="white"
+          stroke-width="1.50139"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M13.27 13.2709L8.26539 8.26624"
+          stroke="white"
+          stroke-width="1.50139"
+          stroke-linecap="round"
+        />
+      </symbol>
+
+      {{!-- audio info --}}
+      <symbol id="icon-audio-info" viewBox="0 0 36 36">
+        <path
+          d="M16.8048 16.8068C17.1213 16.4903 17.5505 16.3125 17.998 16.3125C18.4456 16.3125 18.8748 16.4903 19.1913 16.8068C19.5078 17.1232 19.6855 17.5524 19.6855 18V23.0625C19.6855 23.5101 19.5078 23.9393 19.1913 24.2557C18.8748 24.5722 18.4456 24.75 17.998 24.75C17.5505 24.75 17.1213 24.5722 16.8048 24.2557C16.4883 23.9393 16.3105 23.5101 16.3105 23.0625V18C16.3105 17.5524 16.4883 17.1232 16.8048 16.8068Z"
+          fill="white"
+        />
+        <path
+          d="M17.0605 11.5344C17.338 11.349 17.6643 11.25 17.998 11.25C18.4456 11.25 18.8748 11.4278 19.1913 11.7443C19.5078 12.0607 19.6855 12.4899 19.6855 12.9375C19.6855 13.2713 19.5866 13.5975 19.4012 13.875C19.2157 14.1525 18.9522 14.3688 18.6438 14.4965C18.3355 14.6243 17.9962 14.6577 17.6688 14.5926C17.3415 14.5275 17.0408 14.3667 16.8048 14.1307C16.5688 13.8947 16.4081 13.5941 16.343 13.2667C16.2779 12.9394 16.3113 12.6001 16.439 12.2917C16.5667 11.9834 16.783 11.7198 17.0605 11.5344Z"
+          fill="white"
+        />
+        <path
+          d="M6.8 29.7333L2.53333 34H18C28.1333 34 34 26 34 17.4667C34 8.93333 26.5333 2 18 2C8.93333 2 2 9.46667 2 16.9333C2 23.3333 4.13333 27.0667 6.8 29.7333Z"
+          stroke="white"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+      </symbol>
+
+      {{!-- chevrons --}}
+
+      <symbol id="icon-chevron-right" viewBox="0 0 12 12">
+        <path
+          d="M7.16099 6L3.49976 2.33876L4.33852 1.5L8.83852 6L4.33852 10.5L3.49976 9.66124L7.16099 6Z"
+        />
+      </symbol>
+    </svg>
+
+    <div class="ArticlesAudioPlayer">
+      <div class="ArticlesAudioPlayer-mHeader">
+        <img
+          src="./src/assets/landscape-placeholder.svg"
+          alt="image"
+          width="48px"
+          height="48px"
+          class="ArticlesAudioPlayer-mImages"
+        />
+        <div class="ArticlesAudioPlayer-mText">
+          <div class="ArticlesAudioPlayer-mTitle"></div>
+          <div class="ArticlesAudioPlayer-mTotalArticles"></div>
+          <div class="ArticlesAudioPlayer-mInfo">
+            <div class="ArticlesAudioPlayer-mAuthors"></div>
+            <div class="ArticlesAudioPlayer-mTimecode">
+              <div class="ArticlesAudioPlayer-mTime"></div>
+              <span class="ArticlesAudioPlayer-slash"> / </span>
+              <div class="ArticlesAudioPlayer-mDuration"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ArticlesAudioPlayer-progressBarContainer">
+        <div class="ArticlesAudioPlayer-bufferedBar"></div>
+        <div class="ArticlesAudioPlayer-progressBar"></div>
+      </div>
+      <div class="ArticlesAudioPlayer-body">
+        <audio
+          class="ArticlesAudioPlayer-audio"
+          type="audio/mpeg"
+          crossorigin="anonymous"
+        ></audio>
+        <div class="ArticlesAudioPlayer-header">
+          <img
+            src="./src/assets/landscape-placeholder.svg"
+            alt="image"
+            width="54px"
+            height="54px"
+            class="ArticlesAudioPlayer-images"
+          />
+          <div class="ArticlesAudioPlayer-text">
+            <div class="ArticlesAudioPlayer-subTitle">
+              <div class="ArticlesAudioPlayer-date">
+                <div class=""></div>
+                ...
+              </div>
+              <div class="ArticlesAudioPlayer-authors">...</div>
+            </div>
+            <div class="ArticlesAudioPlayer-title">...</div>
+          </div>
+        </div>
+        <div class="ArticlesAudioPlayer-controls">
+          <button
+            class="ArticlesAudioPlayer-button ArticlesAudioPlayer-prevBtn"
+            title="Previous Track"
+            disabled
+          >
+            <svg>
+              <use xlink:href="#icon-audio-prev-track"></use>
+            </svg>
+          </button>
+          <button
+            class="ArticlesAudioPlayer-button ArticlesAudioPlayer-back10Btn"
+            title="Back 10 Seconds"
+            disabled
+          >
+            <svg>
+              <use xlink:href="#icon-audio-prev-10"></use>
+            </svg>
+          </button>
+          <button
+            class="ArticlesAudioPlayer-button ArticlesAudioPlayer-playPauseBtn ArticlesAudioPlayer-playBtn"
+            title="Play/Pause"
+            disabled
+          >
+            <svg>
+              <use xlink:href="#icon-audio-play"></use>
+            </svg>
+          </button>
+          <button
+            class="ArticlesAudioPlayer-button ArticlesAudioPlayer-forward10Btn"
+            title="Forward 10 Seconds"
+            disabled
+          >
+            <svg>
+              <use xlink:href="#icon-audio-next-10"></use>
+            </svg>
+          </button>
+          <button
+            class="ArticlesAudioPlayer-button ArticlesAudioPlayer-nextBtn"
+            title="Next Track"
+            disabled
+          >
+            <svg>
+              <use xlink:href="#icon-audio-next-track"></use>
+            </svg>
+          </button>
+          <div class="ArticlesAudioPlayer-timecode">
+            <span class="ArticlesAudioPlayer-currentTime">0:00</span> /
+            <span class="ArticlesAudioPlayer-duration">0:00</span>
+          </div>
+        </div>
+        <div class="ArticlesAudioPlayer-misc">
+          <div
+            class="ArticlesAudioPlayer-miscBtn ArticlesAudioPlayer-playlistBtn"
+          >
+            <svg>
+              <use xlink:href="#icon-playlist"></use>
+            </svg>
+          </div>
+          <div class="ArticlesAudioPlayer-miscBtn ArticlesAudioPlayer-miniBtn">
+            <svg>
+              <use xlink:href="#icon-minimaze-down"></use>
+            </svg>
+            <div class="ArticlesAudioPlayer-miniBtnMobile">
+              <span class="ArticlesAudioPlayer-miniBtnMobile-bar"></span>
+              <span class="ArticlesAudioPlayer-miniBtnMobile-bar"></span>
+              <span class="ArticlesAudioPlayer-miniBtnMobile-bar"></span>
+              <span class="ArticlesAudioPlayer-miniBtnMobile-bar"></span>
+            </div>
+          </div>
+          <div class="ArticlesAudioPlayer-volumeControl">
+            <button
+              class="ArticlesAudioPlayer-miscBtn ArticlesAudioPlayer-volumeBtn"
+            >
+              <svg>
+                <use xlink:href="#icon-volume"></use>
+              </svg>
+            </button>
+
+            <div class="ArticlesAudioPlayer-volumeModal" id="volume-modal">
+              <div class="ArticlesAudioPlayer-volumeSliderRoot">
+                <div class="ArticlesAudioPlayer-volumeTrack"></div>
+                <div class="ArticlesAudioPlayer-volumeFill"></div>
+                <div class="ArticlesAudioPlayer-volumeThumb"></div>
+              </div>
+              <input
+                type="range"
+                class="ArticlesAudioPlayer-volumeSlider"
+                min="0"
+                max="1"
+                step="0.01"
+                value="1"
+                style="display: none"
+              />
+            </div>
+          </div>
+          <div class="ArticlesAudioPlayer-info">
+            <div
+              class="ArticlesAudioPlayer-miscBtn ArticlesAudioPlayer-infoBtn"
+            >
+              <svg><use xlink:href="#icon-audio-info"></use></svg>
+            </div>
+
+            <div class="ArticlesAudioPlayer-infoModal">
+              <button class="ArticlesAudioPlayer-infoClose">
+                <svg><use xlink:href="#icon-close"></use></svg>
+              </button>
+              <h3>Articles audio</h3>
+              <p>
+                Pour une meilleure immersion, cette fonctionnalité peut utiliser
+                les voix réelles de nos journalistes, synthétisées grâce à une
+                IA, et avec leur consentement. Cela peut occasionnellement
+                entraîner des erreurs de prononciation ou de ton. La version
+                écrite fait foi.
+              </p>
+              <div class="ArticlesAudioPlayer-modalArrow"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ArticlesAudioPlayer-playlistContainer">
+        <button class="ArticlesAudioPlayer-playlistArrowClose">
+          <svg><use xlink:href="#icon-audio-chevron"></use></svg>
+        </button>
+        <div class="ArticlesAudioPlayer-playlistLogo">
+          <img
+            src="./src/assets/placeholder-66x20.svg"
+            class="Image"
+            alt="7H logo"
+            width="66"
+            height="20"
+          />
+          <div class="ArticlesAudioPlayer-playlistDate"></div>
+        </div>
+        <div class="ArticlesAudioPlayer-calendarControl">
+          <button
+            class="ArticlesAudioPlayer-calendarArrow ArticlesAudioPlayer-calendarBack"
+          >
+            <svg><use xlink:href="#icon-chevron-right"></use></svg>
+          </button>
+          <div class="ArticlesAudioPlayer-calendar"></div>
+          <button
+            class="ArticlesAudioPlayer-calendarArrow ArticlesAudioPlayer-calendarForward"
+          >
+            <svg><use xlink:href="#icon-chevron-right"></use></svg>
+          </button>
+        </div>
+        <ul class="ArticlesAudioPlayer-playlist">
+          <li>...</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ArticlesAudioPlayer-overlay"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
